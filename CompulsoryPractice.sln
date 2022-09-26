@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompulsoryPractice", "CompulsoryPractice\CompulsoryPractice.csproj", "{E074C6C7-458F-4F95-9AF2-5DF74DAD9CD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTestProject", "XUnitTestProject\XUnitTestProject.csproj", "{84718883-EE29-496B-B77F-9F42C7055EBF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E074C6C7-458F-4F95-9AF2-5DF74DAD9CD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E074C6C7-458F-4F95-9AF2-5DF74DAD9CD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E074C6C7-458F-4F95-9AF2-5DF74DAD9CD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E074C6C7-458F-4F95-9AF2-5DF74DAD9CD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84718883-EE29-496B-B77F-9F42C7055EBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84718883-EE29-496B-B77F-9F42C7055EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84718883-EE29-496B-B77F-9F42C7055EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84718883-EE29-496B-B77F-9F42C7055EBF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
