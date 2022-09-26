@@ -141,16 +141,33 @@ public class ReviewService : IReviewService
 
     }
 
+    // 9. On input N, what is top N of movies? The score of a movie is its average rate.
     public List<int> GetTopRatedMovies(int amount)
     {
-        throw new NotImplementedException();
+        // Puts average ratings for all movies into dictionary
+        Dictionary<int, double> movieRatingAverages = new Dictionary<int, double>();
+        foreach (BEReview review in _reviewRepository.GetAllReviews())
+        {
+            int movieId = review.Movie;
+            movieRatingAverages[movieId] = GetAverageRateOfMovie(movieId);
+        }
+
+        // Sorts movies based on their average rating and returns N of them
+        return movieRatingAverages.OrderBy(pair => pair.Value)
+            .Take(amount)
+            .Select(pair => pair.Key)
+            .ToList();
     }
 
+    // 10. On input N, what are the movies that reviewer N has reviewed?
+    //  The list should be sorted decreasing by rate first, and date secondly.
     public List<int> GetTopMoviesByReviewer(int reviewer)
     {
         throw new NotImplementedException();
     }
 
+    // 11. On input N, who are the reviewers that have reviewed movie N? The list
+    //  should be sorted decreasing by rate first, and date secondly.
     public List<int> GetReviewersByMovie(int movie)
     {
         throw new NotImplementedException();
