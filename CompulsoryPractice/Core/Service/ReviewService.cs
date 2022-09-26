@@ -31,7 +31,23 @@ public class ReviewService : IReviewService
 
     public int GetNumberOfRatesByReviewer(int reviewer, int rate)
     {
-        throw new NotImplementedException();
+        if (reviewer <= 0)
+        {
+            throw new ArgumentException( "Id of reviewer is not valid");
+        }
+
+        if (rate < 1 || rate > 5)
+        {
+            throw new ArgumentException("Invalid value of rating");
+        }
+
+        int count = 0;
+        foreach (BEReview review in _reviewRepository.GetAllReviews())
+        {
+            if (review.Reviewer == reviewer && review.Grade == rate)
+                count++;
+        }
+        return count;
     }
 
     public int GetNumberOfReviews(int movie)
@@ -41,7 +57,22 @@ public class ReviewService : IReviewService
 
     public double GetAverageRateOfMovie(int movie)
     {
-        throw new NotImplementedException();
+        if (movie <= 0)
+        {
+            throw new ArgumentException("Invalid movie ID");
+        }
+
+        int total = 0;
+        int count = 0;
+        foreach (BEReview review in _reviewRepository.GetAllReviews())
+        {
+            if (review.Movie == movie)
+            {
+                total += review.Grade;
+                count++;
+            }
+        }
+        return (double) total/count;
     }
 
     public int GetNumberOfRates(int movie, int rate)

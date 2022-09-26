@@ -10,3 +10,15 @@ C:\Users\deaso\RiderProjects\CompulsoryPractice\CompulsoryPractice\obj\Debug\net
 C:\Users\deaso\RiderProjects\CompulsoryPractice\CompulsoryPractice\obj\Debug\net6.0\refint\CompulsoryPractice.dll
 C:\Users\deaso\RiderProjects\CompulsoryPractice\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.pdb
 C:\Users\deaso\RiderProjects\CompulsoryPractice\CompulsoryPractice\obj\Debug\net6.0\ref\CompulsoryPractice.dll
+C:\UniStuff\CompulsoryAssignmentSDM\CompulsoryPractice\bin\Debug\net6.0\CompulsoryPractice.deps.json
+C:\UniStuff\CompulsoryAssignmentSDM\CompulsoryPractice\bin\Debug\net6.0\CompulsoryPractice.dll
+C:\UniStuff\CompulsoryAssignmentSDM\CompulsoryPractice\bin\Debug\net6.0\CompulsoryPractice.pdb
+C:\UniStuff\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.csproj.AssemblyReference.cache
+C:\UniStuff\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.GeneratedMSBuildEditorConfig.editorconfig
+C:\UniStuff\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.AssemblyInfoInputs.cache
+C:\UniStuff\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.AssemblyInfo.cs
+C:\UniStuff\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.csproj.CoreCompileInputs.cache
+C:\UniStuff\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.dll
+C:\UniStuff\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\refint\CompulsoryPractice.dll
+C:\UniStuff\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.pdb
+C:\UniStuff\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\ref\CompulsoryPractice.dll
