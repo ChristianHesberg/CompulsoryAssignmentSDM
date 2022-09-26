@@ -34,3 +34,15 @@ C:\Users\Lwicek\Desktop\Denmark\EASV\Rider projects\CompulsoryAssignmentSDM\Comp
 C:\Users\Lwicek\Desktop\Denmark\EASV\Rider projects\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\refint\CompulsoryPractice.dll
 C:\Users\Lwicek\Desktop\Denmark\EASV\Rider projects\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.pdb
 C:\Users\Lwicek\Desktop\Denmark\EASV\Rider projects\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\ref\CompulsoryPractice.dll
+C:\Users\58963\Documents\GitHub\EASV_school_projects\CompulsoryAssignmentSDM\CompulsoryPractice\bin\Debug\net6.0\CompulsoryPractice.deps.json
+C:\Users\58963\Documents\GitHub\EASV_school_projects\CompulsoryAssignmentSDM\CompulsoryPractice\bin\Debug\net6.0\CompulsoryPractice.dll
+C:\Users\58963\Documents\GitHub\EASV_school_projects\CompulsoryAssignmentSDM\CompulsoryPractice\bin\Debug\net6.0\CompulsoryPractice.pdb
+C:\Users\58963\Documents\GitHub\EASV_school_projects\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.csproj.AssemblyReference.cache
+C:\Users\58963\Documents\GitHub\EASV_school_projects\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\58963\Documents\GitHub\EASV_school_projects\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.AssemblyInfoInputs.cache
+C:\Users\58963\Documents\GitHub\EASV_school_projects\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.AssemblyInfo.cs
+C:\Users\58963\Documents\GitHub\EASV_school_projects\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.csproj.CoreCompileInputs.cache
+C:\Users\58963\Documents\GitHub\EASV_school_projects\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.dll
+C:\Users\58963\Documents\GitHub\EASV_school_projects\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\refint\CompulsoryPractice.dll
+C:\Users\58963\Documents\GitHub\EASV_school_projects\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\CompulsoryPractice.pdb
+C:\Users\58963\Documents\GitHub\EASV_school_projects\CompulsoryAssignmentSDM\CompulsoryPractice\obj\Debug\net6.0\ref\CompulsoryPractice.dll
