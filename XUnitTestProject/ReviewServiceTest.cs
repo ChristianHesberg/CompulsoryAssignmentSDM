@@ -522,8 +522,13 @@ public class ReviewServiceTest
 
     #region Method 9
 
-    [Fact]
-    public void GetTopRatedMovies()
+    [Theory]
+    [InlineData(5)]
+    [InlineData(4)]
+    [InlineData(3)]
+    [InlineData(2)]
+    [InlineData(1)]
+    public void GetTopRatedMovies(int amount)
     {
         // Arrange
         BEReview[] fakeRepo = new BEReview[]
@@ -541,10 +546,52 @@ public class ReviewServiceTest
         IReviewService service = new ReviewService(mockRepo.Object);
         
         // Act
-        List<int> topRatedMovies = service.GetTopRatedMovies(5);
+        List<int> topRatedMovies = service.GetTopRatedMovies(amount);
 
         // Assert
-        Assert.Equal(5, topRatedMovies.Count);
+        Assert.Equal(amount, topRatedMovies.Count);
+        mockRepo.Verify(repo => repo.GetAllReviews(), Times.AtLeastOnce);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(-20000)]
+    public void GetTopRatedMovies_InvalidArgument_ExpectArgumentException(int amount)
+    {
+        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+
+        IReviewService service = new ReviewService(mockRepo.Object);
+        
+        // Act + Assert
+        var ex = Assert.Throws<ArgumentException>(() => service.GetTopRatedMovies(amount));
+        Assert.Equal("Amount can't be less or equal to 0!", ex.Message);
+    }
+
+    [Theory]
+    [InlineData(6)]
+    [InlineData(7)]
+    [InlineData(8)]
+    public void GetTopRatedMovies_AmountIsMoreThanAvailable_ExpectException(int amount)
+    {
+        // Arrange
+        BEReview[] fakeRepo = new BEReview[]
+        {
+            new BEReview() { Reviewer = 1, Movie = 1, Grade = 5, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 2, Movie = 2, Grade = 4, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 3, Movie = 3, Grade = 3, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 4, Movie = 4, Grade = 2, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 5, Movie = 5, Grade = 1, ReviewDate = new DateTime()},
+        };
+
+        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
+
+        IReviewService service = new ReviewService(mockRepo.Object);
+        
+        // Act + Assert
+        var ex = Assert.Throws<Exception>(() => service.GetTopRatedMovies(amount));
+        Assert.Equal("Desired amount is more than available!", ex.Message);
         mockRepo.Verify(repo => repo.GetAllReviews(), Times.AtLeastOnce);
     }
 

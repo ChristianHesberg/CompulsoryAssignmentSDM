@@ -144,9 +144,16 @@ public class ReviewService : IReviewService
     // 9. On input N, what is top N of movies? The score of a movie is its average rate.
     public List<int> GetTopRatedMovies(int amount)
     {
+        if (amount <= 0)
+            throw new ArgumentException("Amount can't be less or equal to 0!");
+
+        BEReview[] allReviews = _reviewRepository.GetAllReviews();
+        if (amount > allReviews.Length)
+            throw new Exception("Desired amount is more than available!");
+        
         // Puts average ratings for all movies into dictionary
         Dictionary<int, double> movieRatingAverages = new Dictionary<int, double>();
-        foreach (BEReview review in _reviewRepository.GetAllReviews())
+        foreach (BEReview review in allReviews)
         {
             int movieId = review.Movie;
             movieRatingAverages[movieId] = GetAverageRateOfMovie(movieId);
