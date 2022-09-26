@@ -381,4 +381,61 @@ public class ReviewServiceTest
         Assert.Equal("Movie does not exist", ex.Message);
         mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
     }
+
+    [Fact]
+    public void GetMostProductiveReviewers()
+    {
+        //Arrange
+        BEReview[] fakeRepo = new BEReview[]
+        {
+            new BEReview() { Reviewer = 1, Movie = 1, Grade = 2, ReviewDate = new DateTime() },
+            new BEReview() { Reviewer = 1, Movie = 1, Grade = 2, ReviewDate = new DateTime() },
+            new BEReview() { Reviewer = 1, Movie = 1, Grade = 2, ReviewDate = new DateTime() },
+            new BEReview() { Reviewer = 2, Movie = 1, Grade = 2, ReviewDate = new DateTime() },
+            new BEReview() { Reviewer = 2, Movie = 1, Grade = 2, ReviewDate = new DateTime() },
+            new BEReview() { Reviewer = 3, Movie = 1, Grade = 2, ReviewDate = new DateTime() },
+            new BEReview() { Reviewer = 3, Movie = 1, Grade = 2, ReviewDate = new DateTime() },
+        };
+
+        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
+
+        IReviewService service = new ReviewService(mockRepo.Object);
+        List<int> actual = service.GetMostProductiveReviewers();
+        //Assert
+        Assert.Single(actual);
+        Assert.Equal(new List<int>(){1}, actual);
+        mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
+
+    }
+    
+    [Fact]
+    public void GetMostProductiveReviewers_WithTwoMostProductiveReviewer()
+    {
+        //Arrange
+        BEReview[] fakeRepo = new BEReview[]
+        {
+            new BEReview() { Reviewer = 1, Movie = 1, Grade = 2, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 1, Movie = 1, Grade = 2, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 1, Movie = 1, Grade = 2, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 2, Movie = 1, Grade = 2, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 2, Movie = 1, Grade = 2, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 3, Movie = 1, Grade = 2, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 3, Movie = 1, Grade = 2, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 3, Movie = 1, Grade = 2, ReviewDate = new DateTime()}
+        };
+
+        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
+
+        IReviewService service = new ReviewService(mockRepo.Object);
+        List<int> actual = service.GetMostProductiveReviewers();
+
+        //Assert
+        Assert.Equal(2, actual.Count);
+        Assert.Equal(new List<int>(){1,3}, actual);
+        mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
+    }
+    
+    //Should we test for an empty list of most productive reviewers if there are no reviews? 
 }

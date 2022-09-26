@@ -1,4 +1,5 @@
-﻿using CompulsoryPractice.Core.Model;
+﻿using System.Collections.ObjectModel;
+using CompulsoryPractice.Core.Model;
 using CompulsoryPractice.Core.Repository;
 
 namespace CompulsoryPractice.Core.Service;
@@ -109,7 +110,12 @@ public class ReviewService : IReviewService
 
     public List<int> GetMostProductiveReviewers()
     {
-        throw new NotImplementedException();
+        Dictionary<int, int> dictionary = _reviewRepository.GetAllReviews()
+            .GroupBy(review => review.Reviewer)
+            .ToDictionary(reviews => reviews.Key, reviews => reviews.Count());
+        int maxValue = dictionary.Max(pair => pair.Value);
+        return dictionary.Where(pair => pair.Value == maxValue).Select(pair => pair.Key).ToList();
+
     }
 
     public List<int> GetTopRatedMovies(int amount)
