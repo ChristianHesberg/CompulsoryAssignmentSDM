@@ -1,4 +1,6 @@
+using System.Runtime.InteropServices;
 using System.Security;
+using Castle.Components.DictionaryAdapter;
 using CompulsoryPractice.Core.Model;
 using CompulsoryPractice.Core.Repository;
 using CompulsoryPractice.Core.Service;
@@ -300,7 +302,83 @@ public class ReviewServiceTest
         mockRepo.Verify(repo => repo.GetAllReviews(), Times.Never);
         
     }
+
+    [Theory]
+    [InlineData(1, 2, 0)]
+    [InlineData(2, 3, 1)]
+    [InlineData(3, 5, 3)]
+    public void GetNumberOfRates(int movie, int rate, int expected)
+    {
+        //Arrange
+        BEReview[] fakeRepo = new BEReview[]
+        {
+            new BEReview() { Reviewer = 1, Movie = 1, Grade = 1, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 2, Movie = 1, Grade = 5, ReviewDate = new DateTime()},
+            
+            new BEReview() { Reviewer = 3, Movie = 2, Grade = 3, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 3, Movie = 2, Grade = 4, ReviewDate = new DateTime()},
+            
+            new BEReview() { Reviewer = 4, Movie = 3, Grade = 2, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 4, Movie = 3, Grade = 5, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 4, Movie = 3, Grade = 5, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 4, Movie = 3, Grade = 5, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 4, Movie = 3, Grade = 4, ReviewDate = new DateTime()},
+        };
+
+        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
+
+        IReviewService service = new ReviewService(mockRepo.Object);
+        //Act
+        int actual = service.GetNumberOfRates(movie, rate);
+        //Assert
+        Assert.Equal(expected, actual);
+        mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
+    }
     
+    [Theory]
+    [InlineData(1, 0)]
+    [InlineData(1, -1)]
+    [InlineData(1, 6)]
+    public void GetNumberOfRates_WithInvalidRating_ExpectArgumentException(int movie, int rate)
+    {
+        //Arrange
+        BEReview[] fakeRepo = new BEReview[]
+        {
+            new BEReview() { Reviewer = 1, Movie = 1, Grade = 2, ReviewDate = new DateTime()},
+        };
+
+        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
+
+        IReviewService service = new ReviewService(mockRepo.Object);
+
+        //Assert
+        var ex = Assert.Throws<ArgumentException>(() => service.GetNumberOfRates(movie, rate));
+        Assert.Equal("Invalid value for rate", ex.Message);
+        mockRepo.Verify(repo => repo.GetAllReviews(), Times.Never);
+    }
     
-    
+    [Theory]
+    [InlineData(123, 1)]
+    [InlineData(13131, 2)]
+    [InlineData(-7, 3)]
+    public void GetNumberOfRates_WithInvalidMovie_ExpectArgumentException(int movie, int rate)
+    {
+        //Arrange
+        BEReview[] fakeRepo = new BEReview[]
+        {
+            new BEReview() { Reviewer = 1, Movie = 1, Grade = 2, ReviewDate = new DateTime()},
+        };
+
+        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
+
+        IReviewService service = new ReviewService(mockRepo.Object);
+
+        //Assert
+        var ex = Assert.Throws<ArgumentException>(() => service.GetNumberOfRates(movie, rate));
+        Assert.Equal("Movie does not exist", ex.Message);
+        mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
+    }
 }
