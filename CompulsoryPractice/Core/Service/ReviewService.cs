@@ -93,7 +93,17 @@ public class ReviewService : IReviewService
 
     public List<int> GetMoviesWithHighestNumberOfTopRates()
     {
-        throw new NotImplementedException();
+        //1, 1
+        //2, 2
+        //3, 2
+        Dictionary<int, int> dictionary = _reviewRepository.GetAllReviews().Select(r => r)
+            .Where(r => r.Grade == 5)
+            .GroupBy(review => review.Movie)
+            .ToDictionary(reviews => reviews.Key, reviews => reviews.Count());
+
+        int maxValue = dictionary.Max(pair => pair.Value);
+        
+        return dictionary.Where(pair => pair.Value == maxValue).Select(pair => pair.Key).ToList();
     }
 
     public List<int> GetMostProductiveReviewers()
