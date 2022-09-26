@@ -88,7 +88,18 @@ public class ReviewService : IReviewService
 
     public int GetNumberOfRates(int movie, int rate)
     {
-        throw new NotImplementedException();
+        if (!(1 <= rate && rate <= 5))
+        {
+            throw new ArgumentException("Invalid value for rate");
+        }
+        List<BEReview> reviewList = _reviewRepository.GetAllReviews().ToList();
+        if (!reviewList.Select(review => review.Movie).Contains(movie))
+        {
+            throw new ArgumentException("Movie does not exist");
+        }
+        return reviewList
+            .Where(review => review.Movie == movie)
+            .Count(review => review.Grade == rate);
     }
 
     public List<int> GetMoviesWithHighestNumberOfTopRates()
