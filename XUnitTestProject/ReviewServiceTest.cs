@@ -89,8 +89,12 @@ public class ReviewServiceTest
         mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
     }
 
-    [Fact]
-    public void GetAverageRateFromReviewer_WithNonExistentReviewer()
+    [Theory]
+    [InlineData(3)]
+    [InlineData(5)]
+    [InlineData(17)]
+    [InlineData(null)]
+    public void GetAverageRateFromReviewer_WithNonExistentReviewer(int reviewer)
     {
         //Arrange
         BEReview[] fakeRepo = new BEReview[]
@@ -106,11 +110,62 @@ public class ReviewServiceTest
         
         IReviewService service = new ReviewService(mockRepo.Object);
 
-        int reviewer = 3;
-        
         //Act+Assert
         var ex = Assert.Throws<ArgumentException>(() => service.GetAverageRateFromReviewer(reviewer));
         Assert.Equal("Reviewer does not exist", ex.Message);
+        mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
+    }
+
+    [Theory]
+    [InlineData(1, 1)]
+    [InlineData(2, 3)]
+    public void GetNumberOfReviews(int movie, int expectedAmount)
+    {
+        //Arrange
+        BEReview[] fakeRepo = new BEReview[]
+        {
+            new BEReview() { Reviewer = 1, Movie = 1, Grade = 1, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 1, Movie = 2, Grade = 2, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 2, Movie = 2, Grade = 4, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 2, Movie = 2, Grade = 5, ReviewDate = new DateTime()}
+        };
+
+        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
+        
+        IReviewService service = new ReviewService(mockRepo.Object);
+
+        int actualAmount = service.GetNumberOfReviews(movie);
+        
+        //Assert
+        Assert.Equal(expectedAmount, actualAmount);
+        mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
+    }
+
+    [Theory]
+    [InlineData(4)]
+    [InlineData(6)]
+    [InlineData(222)]
+    [InlineData(null)]
+    public void GetNumberOfReviewsInvalidDataExpectArgumentException(int movie)
+    {
+        //Arrange
+        BEReview[] fakeRepo = new BEReview[]
+        {
+            new BEReview() { Reviewer = 1, Movie = 1, Grade = 1, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 1, Movie = 2, Grade = 2, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 2, Movie = 2, Grade = 4, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 2, Movie = 2, Grade = 5, ReviewDate = new DateTime()}
+        };
+
+        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
+        
+        IReviewService service = new ReviewService(mockRepo.Object);
+        
+        //Act+Assert
+        var ex = Assert.Throws<ArgumentException>(() => service.GetNumberOfReviews(movie));
+        Assert.Equal("Movie does not exist", ex.Message);
         mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
     }
 }
