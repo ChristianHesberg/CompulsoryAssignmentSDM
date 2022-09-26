@@ -26,7 +26,15 @@ public class ReviewService : IReviewService
 
     public double GetAverageRateFromReviewer(int reviewer)
     {
-        throw new NotImplementedException();
+        List<BEReview> reviewList = _reviewRepository.GetAllReviews().ToList();
+        if (!reviewList.Select(review => review.Reviewer).Contains(reviewer))
+        {
+            throw new ArgumentException("Reviewer does not exist");
+        }
+        return reviewList
+                .Where(r => r.Reviewer == reviewer)
+                .Select(r => r.Grade)
+                .Average();
     }
 
     public int GetNumberOfRatesByReviewer(int reviewer, int rate)
