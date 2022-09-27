@@ -72,8 +72,8 @@ public class ReviewServiceTest
         BEReview[] fakeRepo = new BEReview[]
         {
             new BEReview() { Reviewer = 1, Movie = 1, Grade = 1, ReviewDate = new DateTime()},
-            new BEReview() { Reviewer = 1, Movie = 1, Grade = 2, ReviewDate = new DateTime()},
-            new BEReview() { Reviewer = 2, Movie = 2, Grade = 4, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 1, Movie = 2, Grade = 2, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 2, Movie = 1, Grade = 4, ReviewDate = new DateTime()},
             new BEReview() { Reviewer = 2, Movie = 2, Grade = 5, ReviewDate = new DateTime()}
         };
 
