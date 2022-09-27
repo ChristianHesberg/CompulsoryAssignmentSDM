@@ -9,9 +9,7 @@ public class ReviewService : IReviewService
     private IReviewRepository _reviewRepository;
     public ReviewService(IReviewRepository repo)
     {
-        if (repo == null)
-            throw new ArgumentException("Missing repository");
-        _reviewRepository = repo;
+        _reviewRepository = repo ?? throw new ArgumentException("Missing repository");
     }
     
     // 1. On input N, what are the number of reviews from reviewer N?
