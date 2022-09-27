@@ -14,6 +14,7 @@ public class ReviewService : IReviewService
         _reviewRepository = repo;
     }
     
+    // 1. On input N, what are the number of reviews from reviewer N?
     public int GetNumberOfReviewsFromReviewer(int reviewer)
     {
         int count = 0;
@@ -24,7 +25,8 @@ public class ReviewService : IReviewService
         }
         return count;
     }
-
+    
+    // 2. On input N, what is the average rate that reviewer N had given?
     public double GetAverageRateFromReviewer(int reviewer)
     {
         List<BEReview> reviewList = _reviewRepository.GetAllReviews().ToList();
@@ -38,6 +40,7 @@ public class ReviewService : IReviewService
                 .Average();
     }
 
+    // 3. On input N and R, how many times has reviewer N given rate R?
     public int GetNumberOfRatesByReviewer(int reviewer, int rate)
     {
         if (reviewer <= 0)
@@ -58,7 +61,8 @@ public class ReviewService : IReviewService
         }
         return count;
     }
-
+    
+    // 4. On input N, how many have reviewed movie N?
     public int GetNumberOfReviews(int movie)
     {
         List<BEReview> reviews = _reviewRepository.GetAllReviews().ToList();
@@ -67,6 +71,7 @@ public class ReviewService : IReviewService
         return reviews.Count(r => r.Movie == movie);
     }
 
+    // 5. On input N, what is the average rate the movie N had received?
     public double GetAverageRateOfMovie(int movie)
     {
         if (movie <= 0)
@@ -87,6 +92,7 @@ public class ReviewService : IReviewService
         return (double) total/count;
     }
 
+    // 6. On input N and R, how many times had movie N received rate R?
     public int GetNumberOfRates(int movie, int rate)
     {
         if (!(1 <= rate && rate <= 5))
@@ -103,21 +109,28 @@ public class ReviewService : IReviewService
             .Count(review => review.Grade == rate);
     }
 
+    // 7. What is the id(s) of the movie(s) with the highest number of top rates (5)?
     public List<int> GetMoviesWithHighestNumberOfTopRates()
     {
-        //1, 1
-        //2, 2
-        //3, 2
+        // This will create a dictionary that looks something like this
+        //  key,       value
+        //movieId, count of 5* reviews
+        //  1    ,      1
+        //  2    ,      2
+        //  3    ,      2
         Dictionary<int, int> dictionary = _reviewRepository.GetAllReviews().Select(r => r)
             .Where(r => r.Grade == 5)
             .GroupBy(review => review.Movie)
             .ToDictionary(reviews => reviews.Key, reviews => reviews.Count());
-
+        
+        // We search for the biggest number (of occurrences) in values
         int maxValue = dictionary.Max(pair => pair.Value);
         
+        // We list the movies (keys) that have the same value as our biggest number 
         return dictionary.Where(pair => pair.Value == maxValue).Select(pair => pair.Key).ToList();
     }
 
+    // 8. What reviewer(s) had done most reviews?
     public List<int> GetMostProductiveReviewers()
     {
         Dictionary<int, int> dictionary = _reviewRepository.GetAllReviews()
@@ -128,11 +141,33 @@ public class ReviewService : IReviewService
 
     }
 
+    // 9. On input N, what is top N of movies? The score of a movie is its average rate.
     public List<int> GetTopRatedMovies(int amount)
     {
-        throw new NotImplementedException();
+        if (amount <= 0)
+            throw new ArgumentException("Amount can't be less or equal to 0!");
+
+        BEReview[] allReviews = _reviewRepository.GetAllReviews();
+        if (amount > allReviews.Length)
+            throw new Exception("Desired amount is more than available!");
+        
+        // Puts average ratings for all movies into dictionary
+        Dictionary<int, double> movieRatingAverages = new Dictionary<int, double>();
+        foreach (BEReview review in allReviews)
+        {
+            int movieId = review.Movie;
+            movieRatingAverages[movieId] = GetAverageRateOfMovie(movieId);
+        }
+
+        // Sorts movies based on their average rating and returns N of them
+        return movieRatingAverages.OrderBy(pair => pair.Value)
+            .Take(amount)
+            .Select(pair => pair.Key)
+            .ToList();
     }
 
+    // 10. On input N, what are the movies that reviewer N has reviewed?
+    //  The list should be sorted decreasing by rate first, and date secondly.
     public List<int> GetTopMoviesByReviewer(int reviewer)
     {
         BEReview[] allReviews = _reviewRepository.GetAllReviews();
@@ -159,6 +194,8 @@ public class ReviewService : IReviewService
         // return sortedList;
     }
 
+    // 11. On input N, who are the reviewers that have reviewed movie N? The list
+    //  should be sorted decreasing by rate first, and date secondly.
     public List<int> GetReviewersByMovie(int movie)
     {
         throw new NotImplementedException();
