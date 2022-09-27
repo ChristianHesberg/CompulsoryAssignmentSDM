@@ -159,9 +159,8 @@ public class ReviewService : IReviewService
     {
         BEReview[] reviews = _reviewRepository.GetAllReviews();
         if (movie <= 0 || movie > reviews.Length)
-        {
             throw new ArgumentException("Invalid movie ID");
-        }
+        
         return reviews
             .Where(review => review.Movie == movie)
             .OrderByDescending(review => review.Grade)
