@@ -141,29 +141,35 @@ public class ReviewService : IReviewService
     public List<int> GetTopMoviesByReviewer(int reviewer)
     {
         BEReview[] allReviews = _reviewRepository.GetAllReviews();
-        if (reviewer <= 0 || reviewer > allReviews.Length)
+        if (reviewer <= 0)
             throw new ArgumentException("Invalid reviewer ID");
-
-        return allReviews
-            .Where(r => r.Reviewer == reviewer)
-            .OrderByDescending(r => r.ReviewDate)
-            .ThenBy(r => r.Grade)
-            .Select(r => r.Movie).ToList();
+        
+        if(allReviews.Any(review => review.Reviewer == reviewer))
+            return allReviews
+                .Where(r => r.Reviewer == reviewer)
+                .OrderByDescending(r => r.ReviewDate)
+                .ThenBy(r => r.Grade)
+                .Select(r => r.Movie).ToList();
+        
+        throw new ArgumentException("Reviewer not found!");
     }
 
     // 11. On input N, who are the reviewers that have reviewed movie N? The list
     //  should be sorted decreasing by rate first, and date secondly.
     public List<int> GetReviewersByMovie(int movie)
     {
-        BEReview[] reviews = _reviewRepository.GetAllReviews();
-        if (movie <= 0 || movie > reviews.Length)
+        BEReview[] allReviews = _reviewRepository.GetAllReviews();
+        if (movie <= 0)
             throw new ArgumentException("Invalid movie ID");
         
-        return reviews
-            .Where(review => review.Movie == movie)
-            .OrderByDescending(review => review.Grade)
-            .ThenByDescending(review => review.ReviewDate)
-            .Select(review => review.Reviewer)
-            .ToList();
+        if(allReviews.Any(review => review.Movie == movie))
+            return allReviews
+                .Where(review => review.Movie == movie)
+                .OrderByDescending(review => review.Grade)
+                .ThenByDescending(review => review.ReviewDate)
+                .Select(review => review.Reviewer)
+                .ToList();
+        
+        throw new ArgumentException("Movie not found!");
     }
 }

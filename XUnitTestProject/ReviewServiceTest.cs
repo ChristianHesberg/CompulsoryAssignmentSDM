@@ -629,8 +629,7 @@ public class ReviewServiceTest
     [Theory]
     [InlineData(-1)]
     [InlineData(0)]
-    [InlineData(200)]
-    public void GetTopMoviesByReviewer_WithInvalidReviewerId(int reviewer)
+    public void GetTopMoviesByReviewer_WithNegativeOrZeroReviewerID_ExpectArgumentException(int reviewer)
     {
         //Arrange
         BEReview[] fakeRepo = new BEReview[]
@@ -648,8 +647,30 @@ public class ReviewServiceTest
         IReviewService service = new ReviewService(mockRepo.Object);
 
         //Assert
-        var actual = Assert.Throws<ArgumentException>(() => service.GetTopMoviesByReviewer(reviewer));
-        Assert.Equal("Invalid reviewer ID", actual.Message);
+        var ex = Assert.Throws<ArgumentException>(() => service.GetTopMoviesByReviewer(reviewer));
+        Assert.Equal("Invalid reviewer ID", ex.Message);
+        mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
+    }
+    
+    [Theory]
+    [InlineData(2)]
+    [InlineData(200)]
+    public void GetTopMoviesByReviewer_ReviewerNotInList_ExpectArgumentException(int reviewer)
+    {
+        //Arrange
+        BEReview[] fakeRepo = new BEReview[]
+        {
+            new BEReview() { Reviewer = 1, Movie = 1, Grade = 5, ReviewDate = new DateTime(2019, 05, 09) },
+        };
+        
+        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
+
+        IReviewService service = new ReviewService(mockRepo.Object);
+
+        //Assert
+        var ex = Assert.Throws<ArgumentException>(() => service.GetTopMoviesByReviewer(reviewer));
+        Assert.Equal("Reviewer not found!", ex.Message);
         mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
     }
 
@@ -685,8 +706,7 @@ public class ReviewServiceTest
     [Theory]
     [InlineData(-1)]
     [InlineData(0)]
-    [InlineData(200)]
-    public void GetReviewerByMovieInvalidDataExpectArgumentException(int movie)
+    public void GetReviewerByMovie_NegativeOrZeroMovieID_ExpectArgumentException(int movie)
     {
         //Arrange
         BEReview[] fakeRepo = new BEReview[]
@@ -704,8 +724,32 @@ public class ReviewServiceTest
         IReviewService service = new ReviewService(mockRepo.Object);
 
         //Assert
-        var actual = Assert.Throws<ArgumentException>(() => service.GetReviewersByMovie(movie));
-        Assert.Equal("Invalid movie ID", actual.Message);
+        var ex = Assert.Throws<ArgumentException>(() => service.GetReviewersByMovie(movie));
+        Assert.Equal("Invalid movie ID", ex.Message);
+        mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
+    }
+
+    [Theory]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(4)]
+
+    public void GetReviewersByMovie_MovieNotInList_ExpectArgumentException(int movie)
+    {
+        //Arrange
+        BEReview[] fakeRepo = new BEReview[]
+        {
+            new BEReview() { Reviewer = 2, Movie = 1, Grade = 5, ReviewDate = new DateTime(2019, 05, 09) },
+        };
+        
+        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
+
+        IReviewService service = new ReviewService(mockRepo.Object);
+
+        //Assert
+        var ex = Assert.Throws<ArgumentException>(() => service.GetReviewersByMovie(movie));
+        Assert.Equal("Movie not found!", ex.Message);
         mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
     }
 
