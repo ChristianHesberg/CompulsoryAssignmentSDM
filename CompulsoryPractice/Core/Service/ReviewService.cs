@@ -135,7 +135,28 @@ public class ReviewService : IReviewService
 
     public List<int> GetTopMoviesByReviewer(int reviewer)
     {
-        throw new NotImplementedException();
+        BEReview[] allReviews = _reviewRepository.GetAllReviews();
+        if (reviewer <= 0 || reviewer > allReviews.Length)
+        {
+            throw new ArgumentException("Invalid reviewer ID");
+        }
+
+        return allReviews.
+            Where(r => r.Reviewer == reviewer).
+            OrderByDescending(r => r.ReviewDate)
+            .ThenBy(r => r.Grade)
+            .Select(r => r.Movie).ToList();
+        
+        //listOfReviewedMovie.Where(r => r.Reviewer == reviewer);
+        // var ordered = listOfReviewedMovie.OrderByDescending(r => r.ReviewDate).ThenBy(r => r.Grade);
+        // //var orderedEnumerable = ordered.OrderByDescending(r => r.ReviewDate);
+        // List<int> sortedList = new List<int>();
+        // foreach (var review in ordered)
+        // {
+        //     sortedList.Add(review.Movie);
+        // }
+        //
+        // return sortedList;
     }
 
     public List<int> GetReviewersByMovie(int movie)
