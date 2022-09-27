@@ -157,6 +157,16 @@ public class ReviewService : IReviewService
     //  should be sorted decreasing by rate first, and date secondly.
     public List<int> GetReviewersByMovie(int movie)
     {
-        throw new NotImplementedException();
+        BEReview[] reviews = _reviewRepository.GetAllReviews();
+        if (movie <= 0 || movie > reviews.Length)
+        {
+            throw new ArgumentException("Invalid movie ID");
+        }
+        return reviews
+            .Where(review => review.Movie == movie)
+            .OrderByDescending(review => review.Grade)
+            .ThenByDescending(review => review.ReviewDate)
+            .Select(review => review.Reviewer)
+            .ToList();
     }
 }

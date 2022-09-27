@@ -85,10 +85,10 @@ public class ReviewServiceTest
         // Arrange
         BEReview[] fakeRepo = new BEReview[]
         {
-            new BEReview() { Reviewer = 1, Movie = 1, Grade = 1, ReviewDate = new DateTime() },
-            new BEReview() { Reviewer = 1, Movie = 1, Grade = 2, ReviewDate = new DateTime() },
-            new BEReview() { Reviewer = 2, Movie = 2, Grade = 4, ReviewDate = new DateTime() },
-            new BEReview() { Reviewer = 2, Movie = 2, Grade = 5, ReviewDate = new DateTime() }
+            new BEReview() { Reviewer = 1, Movie = 1, Grade = 1, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 1, Movie = 2, Grade = 2, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 2, Movie = 1, Grade = 4, ReviewDate = new DateTime()},
+            new BEReview() { Reviewer = 2, Movie = 2, Grade = 5, ReviewDate = new DateTime()}
         };
 
         Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
@@ -518,62 +518,8 @@ public class ReviewServiceTest
 
     #endregion
     
-    //Should we test for an empty list of most productive reviewers if there are no reviews? 
-
-
-    [Fact]
-    public void GetTopMoviesByReviewer()
-    {
-        //Arrange
-        BEReview[] fakeRepo = new BEReview[]
-        {
-            new BEReview() { Reviewer = 2, Movie = 1, Grade = 5, ReviewDate = new DateTime(2019,05,09)},
-            new BEReview() { Reviewer = 2, Movie = 2, Grade = 5, ReviewDate = new DateTime(2020,06,09)},
-            new BEReview() { Reviewer = 2, Movie = 3, Grade = 4, ReviewDate = new DateTime(2016, 06,06)},
-            new BEReview() { Reviewer = 2, Movie = 4, Grade = 2, ReviewDate = new DateTime(2010,06,06)},
-            new BEReview() { Reviewer = 2, Movie = 5, Grade = 3, ReviewDate = new DateTime(2011,06,06)}
-        };
-
-        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
-        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
-
-        IReviewService service = new ReviewService(mockRepo.Object);
-        List<int> actual = service.GetTopMoviesByReviewer(2);
-
-        //Assert
-        Assert.Equal(5, actual.Count);
-        Assert.Equal(new List<int>(){2,1,3,5,4}, actual);
-        mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
-    }
+    
     #region Method 9
-
-    [Theory]
-    [InlineData(-1)]
-    [InlineData(0)]
-    [InlineData(200)]
-    public void GetTopMoviesByReviewer_WithInvalidReviewerId(int reviewer)
-    {
-        //Arrange
-        BEReview[] fakeRepo = new BEReview[]
-        {
-            new BEReview() { Reviewer = 2, Movie = 1, Grade = 5, ReviewDate = new DateTime(2019, 05, 09) },
-            new BEReview() { Reviewer = 3, Movie = 2, Grade = 5, ReviewDate = new DateTime(2020, 06, 09) },
-            new BEReview() { Reviewer = 4, Movie = 3, Grade = 4, ReviewDate = new DateTime(2016, 06, 06) },
-            new BEReview() { Reviewer = 5, Movie = 4, Grade = 2, ReviewDate = new DateTime(2010, 06, 06) },
-            new BEReview() { Reviewer = 6, Movie = 5, Grade = 3, ReviewDate = new DateTime(2011, 06, 06) }
-        };
-        
-        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
-        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
-
-        IReviewService service = new ReviewService(mockRepo.Object);
-
-        //Assert
-        var actual = Assert.Throws<ArgumentException>(() => service.GetTopMoviesByReviewer(reviewer));
-        Assert.Equal("Invalid reviewer ID", actual.Message);
-        mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
-        
-    }
 
     [Theory]
     [InlineData(5)]
@@ -647,6 +593,120 @@ public class ReviewServiceTest
         var ex = Assert.Throws<Exception>(() => service.GetTopRatedMovies(amount));
         Assert.Equal("Desired amount is more than available!", ex.Message);
         mockRepo.Verify(repo => repo.GetAllReviews(), Times.AtLeastOnce);
+    }
+
+    #endregion
+
+    #region Method 10
+
+    //Should we test for an empty list of most productive reviewers if there are no reviews? 
+    
+    [Fact]
+    public void GetTopMoviesByReviewer()
+    {
+        //Arrange
+        BEReview[] fakeRepo = new BEReview[]
+        {
+            new BEReview() { Reviewer = 2, Movie = 1, Grade = 5, ReviewDate = new DateTime(2019,05,09)},
+            new BEReview() { Reviewer = 2, Movie = 2, Grade = 5, ReviewDate = new DateTime(2020,06,09)},
+            new BEReview() { Reviewer = 2, Movie = 3, Grade = 4, ReviewDate = new DateTime(2016, 06,06)},
+            new BEReview() { Reviewer = 2, Movie = 4, Grade = 2, ReviewDate = new DateTime(2010,06,06)},
+            new BEReview() { Reviewer = 2, Movie = 5, Grade = 3, ReviewDate = new DateTime(2011,06,06)}
+        };
+
+        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
+
+        IReviewService service = new ReviewService(mockRepo.Object);
+        List<int> actual = service.GetTopMoviesByReviewer(2);
+
+        //Assert
+        Assert.Equal(5, actual.Count);
+        Assert.Equal(new List<int>(){2,1,3,5,4}, actual);
+        mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
+    }
+    
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(0)]
+    [InlineData(200)]
+    public void GetTopMoviesByReviewer_WithInvalidReviewerId(int reviewer)
+    {
+        //Arrange
+        BEReview[] fakeRepo = new BEReview[]
+        {
+            new BEReview() { Reviewer = 2, Movie = 1, Grade = 5, ReviewDate = new DateTime(2019, 05, 09) },
+            new BEReview() { Reviewer = 3, Movie = 2, Grade = 5, ReviewDate = new DateTime(2020, 06, 09) },
+            new BEReview() { Reviewer = 4, Movie = 3, Grade = 4, ReviewDate = new DateTime(2016, 06, 06) },
+            new BEReview() { Reviewer = 5, Movie = 4, Grade = 2, ReviewDate = new DateTime(2010, 06, 06) },
+            new BEReview() { Reviewer = 6, Movie = 5, Grade = 3, ReviewDate = new DateTime(2011, 06, 06) }
+        };
+        
+        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
+
+        IReviewService service = new ReviewService(mockRepo.Object);
+
+        //Assert
+        var actual = Assert.Throws<ArgumentException>(() => service.GetTopMoviesByReviewer(reviewer));
+        Assert.Equal("Invalid reviewer ID", actual.Message);
+        mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
+    }
+
+    #endregion
+
+    #region Method 11
+
+    [Fact]
+    public void GetReviewersByMovie()
+    {
+        
+        //Arrange
+        BEReview[] fakeRepo = new BEReview[]
+        {
+            new BEReview() { Reviewer = 1, Movie = 1, Grade = 5, ReviewDate = new DateTime(2019,05,09)},
+            new BEReview() { Reviewer = 2, Movie = 1, Grade = 5, ReviewDate = new DateTime(2020,06,09)},
+            new BEReview() { Reviewer = 3, Movie = 1, Grade = 4, ReviewDate = new DateTime(2016, 06,06)},
+            new BEReview() { Reviewer = 4, Movie = 1, Grade = 2, ReviewDate = new DateTime(2010,06,06)},
+            new BEReview() { Reviewer = 5, Movie = 2, Grade = 3, ReviewDate = new DateTime(2011,06,06)}
+        };
+
+        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
+
+        IReviewService service = new ReviewService(mockRepo.Object);
+        List<int> result = service.GetReviewersByMovie(1);
+        
+        Assert.Equal(4, result.Count);
+        Assert.Equal(new List<int>(){2,1,3,4}, result);
+        mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
+    }
+    
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(0)]
+    [InlineData(200)]
+    public void GetReviewerByMovieInvalidDataExpectArgumentException(int movie)
+    {
+        //Arrange
+        BEReview[] fakeRepo = new BEReview[]
+        {
+            new BEReview() { Reviewer = 2, Movie = 1, Grade = 5, ReviewDate = new DateTime(2019, 05, 09) },
+            new BEReview() { Reviewer = 3, Movie = 2, Grade = 5, ReviewDate = new DateTime(2020, 06, 09) },
+            new BEReview() { Reviewer = 4, Movie = 3, Grade = 4, ReviewDate = new DateTime(2016, 06, 06) },
+            new BEReview() { Reviewer = 5, Movie = 4, Grade = 2, ReviewDate = new DateTime(2010, 06, 06) },
+            new BEReview() { Reviewer = 6, Movie = 5, Grade = 3, ReviewDate = new DateTime(2011, 06, 06) }
+        };
+        
+        Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+        mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
+
+        IReviewService service = new ReviewService(mockRepo.Object);
+
+        //Assert
+        var actual = Assert.Throws<ArgumentException>(() => service.GetReviewersByMovie(movie));
+        Assert.Equal("Invalid movie ID", actual.Message);
+        mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
     }
 
     #endregion
