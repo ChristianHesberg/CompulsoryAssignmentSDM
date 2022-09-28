@@ -92,12 +92,17 @@ public class ReviewService : IReviewService
             .Where(r => r.Grade == 5)
             .GroupBy(review => review.Movie)
             .ToDictionary(reviews => reviews.Key, reviews => reviews.Count());
+
+        if (dictionary.Count > 0)
+        {
+            // We search for the biggest number (of occurrences) in values
+            int maxValue = dictionary.Max(pair => pair.Value);
         
-        // We search for the biggest number (of occurrences) in values
-        int maxValue = dictionary.Max(pair => pair.Value);
-        
-        // We list the movies (keys) that have the same value as our biggest number 
-        return dictionary.Where(pair => pair.Value == maxValue).Select(pair => pair.Key).ToList();
+            // We list the movies (keys) that have the same value as our biggest number 
+            return dictionary.Where(pair => pair.Value == maxValue).Select(pair => pair.Key).ToList();
+        }
+        // Else we return empty list
+        return new List<int>();
     }
 
     // 8. What reviewer(s) had done most reviews?

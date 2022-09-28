@@ -451,6 +451,40 @@ public class ReviewServiceTest
 
         mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
     }
+    
+    
+    [Fact]
+        public void GetMoviesWithHighestNumberOfTopRates_NoMovieWithHighestTopRate()
+        {
+            // Arrange
+            BEReview[] fakeRepo = new BEReview[]
+            {
+                new BEReview() { Reviewer = 1, Movie = 1, Grade = 4, ReviewDate = new DateTime() },
+                new BEReview() { Reviewer = 2, Movie = 2, Grade = 4, ReviewDate = new DateTime() },
+                new BEReview() { Reviewer = 3, Movie = 2, Grade = 3, ReviewDate = new DateTime() },
+                new BEReview() { Reviewer = 4, Movie = 3, Grade = 3, ReviewDate = new DateTime() },
+                new BEReview() { Reviewer = 5, Movie = 3, Grade = 2, ReviewDate = new DateTime() },
+                new BEReview() { Reviewer = 6, Movie = 4, Grade = 1, ReviewDate = new DateTime() },
+            };
+    
+            Mock<IReviewRepository> mockRepo = new Mock<IReviewRepository>();
+            mockRepo.Setup(repo => repo.GetAllReviews()).Returns(fakeRepo);
+    
+            IReviewService service = new ReviewService(mockRepo.Object);
+    
+            // Act
+            List<int> result = service.GetMoviesWithHighestNumberOfTopRates();
+    
+            // Assert
+            Assert.Empty(result);
+            
+            Assert.DoesNotContain(1, result);
+            Assert.DoesNotContain(2, result);
+            Assert.DoesNotContain(3, result);
+            Assert.DoesNotContain(4, result);
+    
+            mockRepo.Verify(repo => repo.GetAllReviews(), Times.Once);
+        }
 
     #endregion
 
